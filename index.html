@@ -6,7 +6,7 @@
     <title>弱者男性判別プログラム</title>
 </head>
 <body>
-    <h2>弱者男性かどうかを判別するプログラム</h2>
+    <h2>弱者男性チェッカー</h2>
 
     <form id="judgmentForm">
         <label>身長:</label>
@@ -15,19 +15,54 @@
         <label>体重:</label>
         <input type="number" id="weight" required> kg<br><br>
 
-        <label>友達の人数（10人以上は10と入力）:</label>
-        <input type="number" id="friends" required> 人<br><br>
+        <label>友達の人数:</label>
+        <select id="friends" required>
+            <option value=0>0人</option>
+            <option value=1>1人</option>
+            <option value=2>2人</option>
+            <option value=3>3人</option>
+            <option value=4>4人</option>
+            <option value=5>5人</option>
+            <option value=6>6人</option>
+            <option value=7>7人</option>
+            <option value=8>8人</option>
+            <option value=9>9人</option>
+            <option value=10>10人以上</option>
+        </select><br><br>
 
-        <label>元カノの人数（3人以上は3と入力）:</label>
-        <input type="number" id="woman" required> 人<br><br>
+        <label>歴代恋人の人数:</label>
+        <select id="woman" required>
+            <option value=0>0人</option>
+            <option value=1>1人</option>
+            <option value=2>2人</option>
+            <option value=3>3人以上</option>
+        </select><br><br>
 
         <label>自己評価(10点満点):</label>
-        <input type="number" id="own_score" required> 点<br><br>
+        <select id="own_score" required>
+            <option value=0>0点</option>
+            <option value=1>1点</option>
+            <option value=2>2点</option>
+            <option value=3>3点</option>
+            <option value=4>4点</option>
+            <option value=5>5点</option>
+            <option value=6>6点</option>
+            <option value=7>7点</option>
+            <option value=8>8点</option>
+            <option value=9>9点</option>
+            <option value=10>10点</option>
+        </select><br><br>
 
-        <label>趣味にアニメ、漫画、ゲーム、収集が一つでも当てはまる:</label>
+        <label>趣味にアニメ、漫画、ゲーム、アイドルが一つでも当てはまる:</label>
         <select id="hobby" required>
             <option value="yes">はい</option>
             <option value="no">いいえ</option>
+        </select><br><br>
+
+        <label>文理:</label>
+        <select id="bunri" required>
+            <option value="yes">理系</option>
+            <option value="no">文系</option>
         </select><br><br>
 
         <button type="button" onclick="determineResult()">判定する</button>
@@ -44,6 +79,7 @@
             const woman = parseInt(document.getElementById("woman").value);
             const own_score = parseInt(document.getElementById("own_score").value);
             const hobby = document.getElementById("hobby").value;
+            const bunri = document.getElementById("bunri").value;
 
             // 入力が不足している場合のチェック
             if (isNaN(tall) || isNaN(weight) || isNaN(friends) || isNaN(woman) || isNaN(own_score)) {
@@ -61,15 +97,34 @@
             // 趣味スコア
             let hobbyScore = hobby === 'yes' ? 30 : 0;
 
+            // 文理スコア
+            let bunriScore = bunri === 'yes' ? 5 : 0;
+
             // 総合スコア
-            let totalScore = 100 - bmiScore + communityScore - hobbyScore;
+            let totalScore = 100 - bmiScore + communityScore - hobbyScore - bunriScore;
 
             // 判定結果の生成
             let resultMessage;
-            if (totalScore < 100) {
-                resultMessage = `判定結果: 弱者男性と見なされる可能性があります。(基準100点) (スコア: ${totalScore.toFixed(2)})`;
+            if (totalScore < 80) {
+                resultMessage = `判定結果: 弱者男性です。\n(基準100点)\n(スコア: ${totalScore.toFixed(2)})\n`;
+    
+                if (bmi < 19.5) {
+                    resultMessage += `ガリガリの体を叩き直せ`;
+                } else if (bmi > 22.5) {
+                    resultMessage += `ふつーに痩せろ`;
+                }
+
+            } else if (totalScore < 100) {
+                resultMessage = `判定結果: 弱者男性の可能性があります。\n（基準100点）\n(スコア: ${totalScore.toFixed(2)})\n`;
+
+                if (bmi < 19.5) {
+                    resultMessage += `ガリガリの体を叩き直せ`;
+                } else if (bmi > 22.5) {
+                    resultMessage += `ふつーに痩せろ`;
+                }
+                
             } else {
-                resultMessage = `判定結果: 弱者男性とは見なされない可能性が高いです。（基準100点） (スコア: ${totalScore.toFixed(2)})`;
+                resultMessage = `判定結果: 弱者男性ではありません。\n（基準100点）\n(スコア: ${totalScore.toFixed(2)})\n`;
             }
 
             // 結果の表示
