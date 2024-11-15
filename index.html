@@ -63,7 +63,7 @@
             <option value=10>10点</option>
         </select><br><br>
 
-        <label>趣味にアニメ、漫画、ゲーム、アイドルが一つでも当てはまる:</label>
+        <label>趣味にアニメ、ゲーム、アイドルが一つでも当てはまる:</label>
         <select id="hobby" required>
             <option value="yes">はい</option>
             <option value="no">いいえ</option>
@@ -99,7 +99,7 @@
 
             // BMI計算
             const bmi = weight / (tall ** 2);
-            let bmiScore = Math.abs(22 - bmi) * 4;
+            let bmiScore = Math.abs(22 - bmi) * 4 + (171.5 - (tall * 100));
 
             // コミュニティスコア
             let communityScore = friends * 1.5 + woman * 40 + own_score * 3;
